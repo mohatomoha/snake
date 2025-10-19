@@ -9,10 +9,13 @@ import pygame
 import sys
 import time
 import random
+
+# customizable aspects (square size MUST evenly divide side length)
 side_length = 400 # pixels
 square_size = 20 # pixels
-
-# WORKS ONLY IF SIDE_LENGTH IS DIVISIBLE BY SQUARE_SIZE!!!!
+snake_color = "green"
+apple_color = "red"
+wall_color = "blue"
 
 # i hate oop
 class Apple:
@@ -37,6 +40,8 @@ class Apple:
 run = 0
 high_run = 0
 high_score = 0
+
+# loop code
 while True:
     screen = pygame.display.set_mode((side_length, side_length))
     clock = pygame.time.Clock()
@@ -46,6 +51,7 @@ while True:
     score = 0
     apple = Apple(1, 1, 20) 
     apple.move()
+    # game code
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -68,11 +74,11 @@ while True:
         
         screen.fill("black")
         # apple draw
-        pygame.draw.rect(screen, "red", (apple.x * square_size, apple.y * square_size, apple.size, apple.size))
+        pygame.draw.rect(screen, apple_color, (apple.x * square_size, apple.y * square_size, apple.size, apple.size))
         # break logic, snake drawing logic. pretty meh O(n^2) time but its the best i can do
         for i in range(len(snake_array)):
             for j in range(len(snake_array)):
-                pygame.draw.rect(screen, "green", (snake_array[j][0] * square_size, snake_array[j][1] * square_size, square_size, square_size))
+                pygame.draw.rect(screen, snake_color, (snake_array[j][0] * square_size, snake_array[j][1] * square_size, square_size, square_size))
                 if snake_array[i] == snake_array[j] and i != j:
                     running = False
         # APPLE LOGIC :grin:
@@ -119,10 +125,10 @@ while True:
         
 
         # top left corner used for x-y values for rects, js like p5.js (get it?? :joy_cat:) also this takes priority when drawing
-        pygame.draw.rect(screen, "blue", (0, 0, side_length, square_size))
-        pygame.draw.rect(screen, "blue", (side_length - square_size, 0, square_size, side_length))
-        pygame.draw.rect(screen, "blue", (0, side_length - square_size, side_length, square_size))
-        pygame.draw.rect(screen, "blue", (0, 0, square_size, side_length))
+        pygame.draw.rect(screen, wall_color, (0, 0, side_length, square_size))
+        pygame.draw.rect(screen, wall_color, (side_length - square_size, 0, square_size, side_length))
+        pygame.draw.rect(screen, wall_color, (0, side_length - square_size, side_length, square_size))
+        pygame.draw.rect(screen, wall_color, (0, 0, square_size, side_length))
         pygame.display.flip()
 
         clock.tick(side_length/30) # speed of the snake is proportional to the size of the screen
